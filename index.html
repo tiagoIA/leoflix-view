@@ -118,26 +118,30 @@
         Object.keys(data).forEach((channel) => {
           const channelRow = document.createElement("div");
           channelRow.classList.add("row");
+
           const title = document.createElement("h3");
           title.textContent = channel;
+          title.id = channel.replace(/\s+/g, "-").toLowerCase(); // id único para scroll
           videoContainer.appendChild(title);
 
-          data[channel].forEach((url) => {
-            const videoId = url.split("v=")[1];
+          data[channel].forEach((video) => {
+            const videoId = video.url.split("v=")[1];
             const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`;
             const videoWrapper = document.createElement("div");
             videoWrapper.classList.add("video-wrapper");
-            videoWrapper.innerHTML = `<iframe src="${embedUrl}" allowfullscreen></iframe>`;
+            videoWrapper.innerHTML = `
+              <iframe src="${embedUrl}" allowfullscreen></iframe>
+              <p style="margin-top: 5px; font-size: 14px;">${video.title}</p>
+            `;
             channelRow.appendChild(videoWrapper);
           });
 
           videoContainer.appendChild(channelRow);
 
-          // Adiciona à sidebar
           const li = document.createElement("li");
           li.textContent = channel;
           li.onclick = () => {
-            title.scrollIntoView({ behavior: "smooth" });
+            document.getElementById(title.id).scrollIntoView({ behavior: "smooth" });
           };
           channelList.appendChild(li);
         });
@@ -149,4 +153,5 @@
   </script>
 </body>
 </html>
+
 
