@@ -112,7 +112,7 @@
     const videoContainer = document.getElementById("videoContainer");
     const channelList = document.getElementById("channelList");
 
-    fetch("https://leoflix-admin.onrender.com/static/videos.json")
+    fetch("https://leoflix-admin.onrender.com/videos.json")
       .then((response) => response.json())
       .then((data) => {
         Object.keys(data).forEach((channel) => {
@@ -149,3 +149,4 @@
   </script>
 </body>
 </html>
+
