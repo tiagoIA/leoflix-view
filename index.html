@@ -83,45 +83,49 @@
 
   <script>
     async function carregarVideos() {
-      const res = await fetch('https://leoflix-admin.onrender.com/static/videos.json');
-      const data = await res.json();
-      const catalogo = document.getElementById('catalogo');
-      const menu = document.getElementById('menu');
+      try {
+        const res = await fetch('videos.json');
+        const data = await res.json();
+        const catalogo = document.getElementById('catalogo');
+        const menu = document.getElementById('menu');
 
-      for (const categoria in data) {
-        // Sidebar
-        const itemMenu = document.createElement('li');
-        itemMenu.textContent = categoria;
-        itemMenu.onclick = () => {
-          const section = document.getElementById('sec-' + categoria);
-          if (section) section.scrollIntoView({ behavior: 'smooth' });
-        };
-        menu.appendChild(itemMenu);
+        for (const categoria in data) {
+          // Sidebar
+          const itemMenu = document.createElement('li');
+          itemMenu.textContent = categoria;
+          itemMenu.onclick = () => {
+            const section = document.getElementById('sec-' + categoria);
+            if (section) section.scrollIntoView({ behavior: 'smooth' });
+          };
+          menu.appendChild(itemMenu);
 
-        // Conteúdo
-        const secao = document.createElement('section');
-        secao.id = 'sec-' + categoria;
-        const titulo = document.createElement('h2');
-        titulo.textContent = categoria;
-        const carrossel = document.createElement('div');
-        carrossel.className = 'carrossel';
+          // Conteúdo
+          const secao = document.createElement('section');
+          secao.id = 'sec-' + categoria;
+          const titulo = document.createElement('h2');
+          titulo.textContent = categoria;
+          const carrossel = document.createElement('div');
+          carrossel.className = 'carrossel';
 
-        data[categoria].forEach(link => {
-          const videoId = new URLSearchParams(link.split('?')[1]).get('v');
-          const video = document.createElement('div');
-          video.className = 'video';
-          video.innerHTML = `
-            <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">
-              <img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" alt="Vídeo">
-              <span>Assistir</span>
-            </a>
-          `;
-          carrossel.appendChild(video);
-        });
+          data[categoria].forEach(link => {
+            const videoId = new URLSearchParams(link.split('?')[1]).get('v');
+            const video = document.createElement('div');
+            video.className = 'video';
+            video.innerHTML = `
+              <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">
+                <img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" alt="Vídeo">
+                <span>Assistir</span>
+              </a>
+            `;
+            carrossel.appendChild(video);
+          });
 
-        secao.appendChild(titulo);
-        secao.appendChild(carrossel);
-        catalogo.appendChild(secao);
+          secao.appendChild(titulo);
+          secao.appendChild(carrossel);
+          catalogo.appendChild(secao);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar videos.json:", error);
       }
     }
 
